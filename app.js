@@ -29,18 +29,21 @@ module.exports = function () {
 		return (username === process.env.BITBUCKET_USERNAME && password === process.env.BITBUCKET_PASSWORD);
 	}), function (req, res) {
 		if (Object.keys(req.body).length === 0) {
+			console.log('Object.keys(req.body).length === 0', req);
 			res.status(400).end();
 			return;
 		}
 		
 		// verify we have the information we need
 		if (!req.body.pullrequest_created) {
+			console.log('!req.body.pullrequest_created', req);
 			res.status(400).end();
 			return;
 		}
 		var pullRequest = req.body.pullrequest_created;
 		
 		if (!pullRequest.id || typeof(pullRequest.description) !== 'string' || !(pullRequest.source && pullRequest.source.branch && pullRequest.source.branch.name) || !(pullRequest.source && pullRequest.source.repository && pullRequest.source.repository.full_name)) {
+			console.log("!pullRequest.id || typeof(pullRequest.description) !== 'string' || !(pullRequest.source && pullRequest.source.branch && pullRequest.source.branch.name) || !(pullRequest.source && pullRequest.source.repository && pullRequest.source.repository.full_name)", req);
 			res.status(400).end();
 			return;
 		}
